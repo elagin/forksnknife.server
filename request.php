@@ -5,11 +5,8 @@ ini_set('display_startup_errors', 'On');
 
 function __autoload($class_name)
 {
-
-  print_r($class_name);
     /** @noinspection PhpIncludeInspection */
     require_once 'class/' . $class_name . '.php';
-    print_r($class_name);
 }
 //const TEST = 1;
 

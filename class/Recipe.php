@@ -6,6 +6,7 @@ class Recipe
 
     /** @var Step[] $steps */
     private $steps = array();
+	private $ingredients = array();
 /*
     /** @var Volunteer[] $volunteers */
     //private $volunteers = array();
@@ -24,6 +25,7 @@ class Recipe
         //$this->test        = $data['test'] == 1 ? true : false;
         //$this->requestHistory();
         $this->requestSteps();
+		$this->requestIngredients();
         //$this->requestVolunteers();
     }
 
@@ -71,11 +73,11 @@ class Recipe
         foreach ($this->steps as $step) {
             $out['s'][] = $step->get();
         }
-/*
-        foreach ($this->volunteers as $volunteer) {
-            $out['v'][] = $volunteer->get();
+
+        foreach ($this->ingredients as $ingredient) {
+            $out['i'][] = $ingredient->get();
         }
-        foreach ($this->history as $history) {
+ /*       foreach ($this->history as $history) {
             $out['h'][] = $history->get();
         }
 */
@@ -98,16 +100,38 @@ class Recipe
     */
     private function requestSteps()
     {
-    
 	$query = 'SELECT id, photo, description, time
 				FROM steps a
-				WHERE reciple_id = :reciple_id';
+
+				WHERE recipe_id = :recipe_id
+				ORDER BY id';
+				//echo($query);
+								//WHERE recipe_id = 1';
         $stmt  = ApkDB::getInstance()->prepare($query);
-        $stmt->execute(array('reciple_id' => $this->id));
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-            $this->steps[] = new Step($row);
-        }
+        $stmt->execute(array('recipe_id' => $this->id));
+		while ($row = $stmt->fetch(PDO::FETCH_LAZY))
+		{
+			//echo $row[0] . "\n";
+			$this->steps[] = new Step($row);
+		}
+    }
+	
+	private function requestIngredients()
+    {
+	$query = 'SELECT id, name, count, unit 
+				FROM ingredients
+				WHERE recipe_id = :recipe_id
+				ORDER BY id';
+					//WHERE recipe_id = 1';
+				//echo($query);
+				
+        $stmt  = ApkDB::getInstance()->prepare($query);
+        $stmt->execute(array('recipe_id' => $this->id));
+		while ($row = $stmt->fetch(PDO::FETCH_LAZY))
+		{
+			//echo $row[0] . "\n";
+			$this->ingredients[] = new Ingredient($row);
+		}
     }
 /*    
     private function requestMessages()

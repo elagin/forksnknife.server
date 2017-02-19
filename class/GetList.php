@@ -3,7 +3,6 @@
 class GetList
     extends Core
 {
-
     private $recipes;
 
     /**
@@ -20,7 +19,8 @@ class GetList
 //        $this->user = new Auth($data);
 //        $this->age = isset($data['h']) ? $data['h'] : 24;
 //        if ($this->user->isModerator()) $this->test = 1;
-        $this->requestList();
+        
+		$this->requestList();
         $this->setResult($this->recipes);
 
         //var_dump($this->result);
@@ -45,19 +45,18 @@ class GetList
     private function requestList()
     {
 	$query = 'SELECT id, name FROM recipes';
-
-        $stmt = ApkDB::getInstance()->query($query);
-        while ($row = $stmt->fetch())
-	{
-	  $recipe = new Recipe($row);
-	  $this->recipes[] = $recipe->get();
-	}
-        
-        
+    $stmt = ApkDB::getInstance()->query($query);
+        //while ($row = $stmt->fetch())
+	//while ($row = $stmt->fetch(PDO::FETCH_LAZY))
+	//{
+	//  $recipe = new Recipe($row);
+	//  $this->recipes[] = $recipe->get();
+	//}
         //$stmt->bind_param('ii', $this->age, $this->test);
         $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
+        //$result = $stmt->get_result();
+        while ($row = $stmt->fetch(PDO::FETCH_LAZY))
+		{
             $recipe = new Recipe($row);
             $this->recipes[] = $recipe->get();
         }
