@@ -22,6 +22,17 @@ class ApkDB
 			  PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
 			);
 	    self::$pdo = new PDO($dsn, $user, $pass, $opt);
+		
+		$setNames = "SET NAMES 'utf8'";
+		$setCharacterSet = "SET CHARACTER SET 'utf8'";
+		$setSession = "SET SESSION collation_connection = 'utf8_general_ci'";
+		self::$pdo->exec($setNames);
+		self::$pdo->exec($setCharacterSet);
+		self::$pdo->exec($setSession);
+		//mysql_query("SET NAMES 'utf8'"); 
+		//mysql_query("SET CHARACTER SET 'utf8'");
+		//mysql_query("SET SESSION collation_connection = 'utf8_general_ci'");
+
         }
         return self::$pdo;
     }
