@@ -3,10 +3,10 @@
 class Recipe
 {
     private $id;
-
+    //private $description;
     /** @var Step[] $steps */
-    private $steps = array();
-	private $ingredients = array();
+    //private $steps = array();
+    //$ingredients = array();
 /*
     /** @var Volunteer[] $volunteers */
     //private $volunteers = array();
@@ -17,15 +17,16 @@ class Recipe
      */
     public function __construct($data)
     {
-        $this->id          = $data['id'];
-        $this->name          = $data['name'];
+        $this->id           = $data['id'];
+        $this->name         = $data['name'];
+        $this->description  = $data['description'];
         //$this->status      = self::statusWith($data['status']);
         //$this->type        = Cast::accType($data['type']);
         //$this->medicine    = Cast::medicineType($data['med']);
         //$this->test        = $data['test'] == 1 ? true : false;
         //$this->requestHistory();
         $this->requestSteps();
-		$this->requestIngredients();
+	$this->requestIngredients();
         //$this->requestVolunteers();
     }
 
@@ -45,15 +46,18 @@ class Recipe
      * v - volunteers array
      * h - history array
      */
+    /*
+    public function getIngredients()
+    {
+        return $this->ingredients;
+    }
+*/
     public function get()
     {
-        if ($this->test) {
-            $this->description = 'TEST!!! ' . $this->description;
-            $this->address     = 'TEST!!! ' . $this->address;
-        }
         $out = array(
             'id' => $this->id,
             'name' => $this->name,
+            'description' => $this->description,
 /*
             'time' => $this->timestamp,
             'a' => $this->address,
@@ -66,8 +70,8 @@ class Recipe
             't' => $this->type,
             'med' => $this->medicine,
 */            
-            's' => array()
-//            'v' => array(),
+            's' => array(),
+            'i' => array()
 //            'h' => array()
         );
         foreach ($this->steps as $step) {
@@ -77,10 +81,6 @@ class Recipe
         foreach ($this->ingredients as $ingredient) {
             $out['i'][] = $ingredient->get();
         }
- /*       foreach ($this->history as $history) {
-            $out['h'][] = $history->get();
-        }
-*/
         return $out;
     }
     /*
@@ -102,36 +102,29 @@ class Recipe
     {
 	$query = 'SELECT id, photo, description, time
 				FROM steps a
-
 				WHERE recipe_id = :recipe_id
 				ORDER BY id';
-				//echo($query);
-								//WHERE recipe_id = 1';
         $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->execute(array('recipe_id' => $this->id));
-		while ($row = $stmt->fetch(PDO::FETCH_LAZY))
-		{
-			//echo $row[0] . "\n";
-			$this->steps[] = new Step($row);
-		}
+	while ($row = $stmt->fetch(PDO::FETCH_LAZY))
+	{
+            //echo $row[0] . "\n";
+            $this->steps[] = new Step($row);
+	}
     }
 	
-	private function requestIngredients()
+    private function requestIngredients()
     {
 	$query = 'SELECT id, name, count, unit 
 				FROM ingredients
 				WHERE recipe_id = :recipe_id
 				ORDER BY id';
-					//WHERE recipe_id = 1';
-				//echo($query);
-				
         $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->execute(array('recipe_id' => $this->id));
-		while ($row = $stmt->fetch(PDO::FETCH_LAZY))
-		{
-			//echo $row[0] . "\n";
-			$this->ingredients[] = new Ingredient($row);
-		}
+	while ($row = $stmt->fetch(PDO::FETCH_LAZY))
+	{
+            $this->ingredients[] = new Ingredient($row);
+	}
     }
 /*    
     private function requestMessages()

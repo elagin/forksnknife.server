@@ -15,15 +15,8 @@ class GetList
      */
     public function __construct($data)
     {
-//        $this->test = TEST;
-//        $this->user = new Auth($data);
-//        $this->age = isset($data['h']) ? $data['h'] : 24;
-//        if ($this->user->isModerator()) $this->test = 1;
-        
-		$this->requestList();
+	$this->requestList();
         $this->setResult($this->recipes);
-
-        //var_dump($this->result);
     }
 /*    
     private function requestSteps()
@@ -42,38 +35,25 @@ class GetList
         }
     }
 */    
+    public function requestRecipe($data)
+    {
+        $query = 'SELECT id, name, description FROM recipes WHERE id = :id';
+        $stmt  = ApkDB::getInstance()->prepare($query);
+        $stmt->execute(array('id' => $data));
+        $row = $stmt->fetch(PDO::FETCH_LAZY);
+        $recipe = new Recipe($row);
+        return $recipe->get();
+    }
+
     private function requestList()
     {
 	$query = 'SELECT id, name FROM recipes';
-    $stmt = ApkDB::getInstance()->query($query);
-        //while ($row = $stmt->fetch())
-	//while ($row = $stmt->fetch(PDO::FETCH_LAZY))
-	//{
-	//  $recipe = new Recipe($row);
-	//  $this->recipes[] = $recipe->get();
-	//}
-        //$stmt->bind_param('ii', $this->age, $this->test);
+        $stmt = ApkDB::getInstance()->query($query);
         $stmt->execute();
-        //$result = $stmt->get_result();
         while ($row = $stmt->fetch(PDO::FETCH_LAZY))
-		{
+        {
             $recipe = new Recipe($row);
             $this->recipes[] = $recipe->get();
         }
     }
-/*
-    private function requestRecipes()
-    {
-    
-	$query = 'SELECT id, name
-				FROM recipes 
-				WHERE 1 = 1';
-        $stmt  = ApkDB::getInstance()->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-            $this->steps[] = new Message($row);
-        }
-    }
-*/
 }

@@ -13,10 +13,10 @@ class Ingredient
      */
     public function __construct($data)
     {
-        $this->id        = $data['id'];
-        $this->name = $data['name'];
-        $this->count      = $data['count'];
-        $this->unit      = $data['unit'];
+        $this->id       = $data['id'];
+        $this->name     = $data['name'];
+        $this->count    = $data['count'];
+        $this->unit     = $data['unit'];
     }
 
     public function get()

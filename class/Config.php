@@ -26,7 +26,6 @@ class Config
 
     private static function readConfig()
     {
-		print Config::$path;
         $content = preg_grep("/.*=.*/", file(Config::$path));
         foreach ($content as $row) {
             list($key, $value) = explode("=", $row, 2);
