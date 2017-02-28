@@ -41,7 +41,17 @@ print_r($_POST);
 <form action="edit.php" method="post">
     <p>Название: <INPUT type="text" required name="name" maxlength="35" size="50" value="<?php echo ($recipe['name']); ?>"/></p>
     <p>Описание: <INPUT type="text" required name="description" maxlength="35" size="50" value="<?php echo ($recipe['description']); ?>"/></p>
+    <script>
+        data = JSON.parse('<?php echo json_encode($recipe);?>');
+    </script>
+    
+    <h3>Ингредиенты:</h3>
+    <table id="ingredientsTable" cellspacing="0" border="1" cellpadding="5" data-max_index=' .count($ingredientList). '>
+        <tbody></tbody>
+    </table>
+    <button type="button" onclick="addIngredient(this)">Добавить</button>
     <?php
+/*
         if(count($ingredientList > 0))
         {
             echo("\n");
@@ -55,20 +65,23 @@ print_r($_POST);
             {
                 $rec = $ingredientList[$i];
                 echo("<tr data-index='$i'>");
-                echo('<td>'. insertTextInput("ingredient[$i][name]", $rec['name'], 50) . '</td>');
+                //echo('<td>'. insertTextInput("ingredient[$i][name]", $rec['name'], 50) . '</td>');
+                //var name = addInputIngredient(idx, 'name', "", 50);
+                echo('<script type="text/javascript">addInputIngredient('.$i.', name, 50);</script>');
                 echo('<td>'. insertTextInput("ingredient[$i][count]", $rec['count'], 5) . '</td>');
                 echo('<td>'. insertTextInput("ingredient[$i][unit]", $rec['unit'], 10) . '</td>');
                 echo('<td onclick="removeIngredient(this)">Удалить</td>');
                 echo("</tr>");
                 echo("\n");
             }
-/*            echo("<tr>");
-            echo('<td colspan="3" onclick="addIngredient(this)" align="center" >Добавить</td>');
-            echo("</tr>");*/
+//            echo("<tr>");
+//            echo('<td colspan="3" onclick="addIngredient(this)" align="center" >Добавить</td>');
+//            echo("</tr>");
             echo("</table>");
             echo("\n");
             echo('<button type="button" onclick="addIngredient(this)">Добавить</button>');
         }
+*/
         if(count($stepList > 0))
         {
             echo("\n");
@@ -96,5 +109,9 @@ print_r($_POST);
     ?>
  <p><input type="submit" /></p>
 </form>
+     
+    <script>
+        printIngredients();
+    </script>
 </body>
 </html>
