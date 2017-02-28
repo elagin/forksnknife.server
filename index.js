@@ -10,8 +10,38 @@ removeIngredient = function (el) {
 };
 
 removeStep = function (el) {
-    el.parentNode.remove();
+    el.parentNode.parentNode.remove();
 };
+
+addStep = function (idx, desc, time, photo) {
+    var tr = document.createElement('tr');
+
+    var tdDesc = addTextArea('desc', desc);
+    tr.appendChild(tdDesc);
+
+    var tdTime = addInputStep(idx, 'time', time, 5);
+    tr.appendChild(tdTime);
+
+    var tdPhoto = addInputStep(idx, 'photo', photo, 10);
+    tr.appendChild(tdPhoto);
+
+    var tdDel = document.createElement('td');
+    tdDel.innerHTML = '<button onclick="removeStep(this)">Удалить</button>';
+    tr.appendChild(tdDel);
+
+    var tableRef = stepsTable.querySelector('tbody');
+    tableRef.appendChild(tr);
+    tableRef.setAttribute('data-max_index', idx++);
+
+}
+
+addInputStep = function (idx, name, value, size) {
+    var td = document.createElement('td');
+    value = value || '';
+    var str = '<INPUT type="text" name=ingredient[' + idx + '][' + name + '] maxlength="' + size + '" size="' + size + '" value="' + String(value) + '"/>';
+    td.innerHTML = str;
+    return td;
+}
 
 addIngredient = function (idx, name, count, unit) {
     var tr = document.createElement('tr');
@@ -42,9 +72,24 @@ addInputIngredient = function (idx, name, value, size) {
     return td;
 }
 
+addTextArea = function (name, value) {
+    var td = document.createElement('td');
+    value = value || '';
+    var str = '<textarea name="' + name + '" cols="80" rows="5" >' + value + '</textarea>';
+    td.innerHTML = str;
+    return td;
+}
+
 printIngredients = function () {
     for (var i = 0; i < data.i.length; i++) {
         var ingredient = data.i[i];
         addIngredient(i, ingredient.name, ingredient.count, ingredient.unit)
+    }
+};
+
+printSteps = function () {
+    for (var i = 0; i < data.s.length; i++) {
+        var step = data.s[i];
+        addStep(i, step.desc, step.time, step.photo)
     }
 };

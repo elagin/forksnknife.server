@@ -46,38 +46,23 @@ function insertTextarea($name, $value) {
 
             <h3>Ингредиенты:</h3>
             <table id="ingredientsTable" cellspacing="0" border="1" cellpadding="5" data-max_index=' .count($ingredientList). '>
-                <tbody></tbody>
+                <tbody><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>
             </table>
             <button type="button" onclick="addIngredient(this)">Добавить</button>
-            <?php
-            if (count($stepList > 0)) {
-                echo("\n");
-                echo('<h3>Шаги:</h3>');
-                echo('<table cellspacing="0" border="1" cellpadding="5" >');
-                echo("<tr>");
-                echo('<td>Описание</td><td>Время</td><td>Фото</td>');
-                echo("</tr>");
-                for ($i = 0; $i < count($stepList); ++$i) {
-                    $rec = $stepList[$i];
-                    echo("<tr data-index='$i'>");
-                    echo('<td>' . insertTextarea("step[$i][desc]", $rec['desc']) . '</td>');
-                    echo('<td>' . insertTextInput("step[$i][time]", $rec['time'], 5) . '</td>');
-                    echo('<td>' . insertTextInput("step[$i][photo]", $rec['photo'], 10) . '</td>');
-                    echo('<td onclick="removeStep(this)">Удалить</td>');
-                    echo("</tr>");
-                    echo("\n");
-                }
-                echo("<tr>");
-                echo('<td colspan="3" onclick="addIngredient(this)" align="center" >Добавить</td>');
-                echo("</tr>");
-                echo("</table>");
-            }
-            ?>
+
+            <h3>Шаги:</h3>
+            <table id="stepsTable" cellspacing="0" border="1" cellpadding="5" data-max_index=' .count($stepList). '>
+                <tbody>
+                    <tr><td>Описание</td><td>Время</td><td>Фото</td><td>Действие</td></tr>
+                </tbody>
+            </table>
+            <button type="button" onclick="addStep(this)">Добавить</button>
+
             <p><input type="submit" /></p>
         </form>
-
         <script>
             printIngredients();
+            printSteps();
         </script>
     </body>
 </html>
