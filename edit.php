@@ -8,16 +8,19 @@ function __autoload($class_name)
     /** @noinspection PhpIncludeInspection */
     require_once 'class/' . $class_name . '.php';
 }
-//const TEST = 1;
+
 $method = new GetList($_GET);
 $recipe = $method->requestRecipe(1);
 $ingredientList = $recipe['i'];
 $stepList = $recipe['s'];
+
+//print_r($_POST);
+
 ?>
 
 <?php
     function insertTextInput($name, $value) {
-        return ('<INPUT type="text" required name="'. $name .'" maxlength="35" size="50" value="'. $value .'"/>');
+        return ('<INPUT type="text" name="'. $name .'" maxlength="35" size="50" value="'. $value .'"/>');
 }
 ?>
 
@@ -26,6 +29,7 @@ $stepList = $recipe['s'];
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Рецепт</title>
+  <script src="index.js"></script>
  </head>
  <body>
 <form action="edit.php" method="post">
@@ -39,10 +43,11 @@ $stepList = $recipe['s'];
             for($i = 0; $i < count($ingredientList); ++$i)
             {
                 $rec = $ingredientList[$i];
-                echo("<tr>");
-                echo('<td>'. insertTextInput("ingredient_name".$i, $rec['name']) . '</td>');
-                echo('<td>'. insertTextInput("ingredient_count".$i, $rec['count']) . '</td>');
-                echo('<td>'. insertTextInput("ingredient_unit".$i, $rec['unit']) . '</td>');
+                echo("<tr data-index='$i'>");
+                echo('<td>'. insertTextInput("ingredient[$i][name]", $rec['name']) . '</td>');
+                echo('<td>'. insertTextInput("ingredient[$i][count]", $rec['count']) . '</td>');
+                echo('<td>'. insertTextInput("ingredient[$i][unit]", $rec['unit']) . '</td>');
+                echo('<td onclick="removeIngredient(this)">test</td>');
                 echo("</tr>");
             }
             echo("</table>");
@@ -54,10 +59,11 @@ $stepList = $recipe['s'];
             for($i = 0; $i < count($stepList); ++$i)
             {
                 $rec = $stepList[$i];
-                echo("<tr>");
-                echo('<td>'. insertTextInput("step_desc".$i, $rec['desc']) . '</td>');
-                echo('<td>'. insertTextInput("step_time".$i, $rec['time']) . '</td>');
-                echo('<td>'. insertTextInput("step_photo".$i, $rec['photo']) . '</td>');
+                echo("<tr data-index='$i'>");
+                echo('<td>'. insertTextInput("step[$i][desc]", $rec['desc']) . '</td>');
+                echo('<td>'. insertTextInput("step[$i][time]", $rec['time']) . '</td>');
+                echo('<td>'. insertTextInput("step[$i][photo]", $rec['photo']) . '</td>');
+                echo('<td onclick="removeStep(this)">test</td>');
                 echo("</tr>");
             }
             echo("</table>");
