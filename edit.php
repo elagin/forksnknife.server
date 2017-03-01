@@ -12,7 +12,8 @@ $method = new GetList($_GET);
 $recipe = $method->requestRecipe(1);
 $ingredientList = $recipe['i'];
 $stepList = $recipe['s'];
-print_r($_POST);
+//print_r($_POST);
+//print_r($recipe['id'])
 ?>
 
 <?php
@@ -37,7 +38,9 @@ function insertTextarea($name, $value) {
         <script src="index.js"></script>
     </head>
     <body>
-        <form action="edit.php" method="post">
+        <!--<form action="edit.php" method="get" id="auth" >-->
+        <form action="save.php" method="get" id="<?php echo ($recipe['id']); ?>">
+            <p><INPUT type="text" name="id" hidden value="<?php echo ($recipe['id']); ?>"/></p>
             <p>Название: <INPUT type="text" required name="name" maxlength="35" size="50" value="<?php echo ($recipe['name']); ?>"/></p>
             <p>Описание: <INPUT type="text" required name="description" maxlength="35" size="50" value="<?php echo ($recipe['description']); ?>"/></p>
             <script>

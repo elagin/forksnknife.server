@@ -38,7 +38,7 @@ addStep = function (idx, desc, time, photo) {
 addInputStep = function (idx, name, value, size) {
     var td = document.createElement('td');
     value = value || '';
-    var str = '<INPUT type="text" name=ingredient[' + idx + '][' + name + '] maxlength="' + size + '" size="' + size + '" value="' + String(value) + '"/>';
+    var str = '<INPUT type="text" name=step[' + idx + '][' + name + '] maxlength="' + size + '" size="' + size + '" value="' + String(value) + '"/>';
     td.innerHTML = str;
     return td;
 }
