@@ -8,25 +8,17 @@ function __autoload($class_name) {
     require_once 'class/' . $class_name . '.php';
 }
 
-$method = new GetList($_GET);
-$recipe = $method->requestRecipe(1);
-$ingredientList = $recipe['i'];
-$stepList = $recipe['s'];
-//print_r($_POST);
-//print_r($recipe['id'])
-?>
+$isOK = false;
 
-<?php
-
-function insertTextInput($name, $value, $size) {
-    return ('<INPUT type="text" name="' . $name . '" maxlength="' . $size . '" size="' . $size . '" value="' . $value . '"/>');
-}
-?>
-
-<?php
-
-function insertTextarea($name, $value) {
-    return ('<textarea name="' . $name . '" cols="80" rows="5" >' . $value . '</textarea>');
+if (isset($_GET['id'])) {
+    $recipe_id = $_GET['id'];
+    $method = new GetList();
+    $recipe = $method->requestRecipe($recipe_id);
+    if (!is_null($recipe)) {
+        $ingredientList = $recipe['i'];
+        $stepList = $recipe['s'];
+        $isOK = true;
+    }
 }
 ?>
 
@@ -38,34 +30,40 @@ function insertTextarea($name, $value) {
         <script src="index.js"></script>
     </head>
     <body>
-        <!--<form action="edit.php" method="get" id="auth" >-->
-        <form action="save.php" method="get" id="<?php echo ($recipe['id']); ?>">
-            <p><INPUT type="text" name="id" hidden value="<?php echo ($recipe['id']); ?>"/></p>
-            <p>Название: <INPUT type="text" required name="name" maxlength="35" size="50" value="<?php echo ($recipe['name']); ?>"/></p>
-            <p>Описание: <INPUT type="text" required name="description" maxlength="35" size="50" value="<?php echo ($recipe['description']); ?>"/></p>
+        <?php if ($isOK) { ?>
+            <!--<form action="edit.php" method="get" id="auth" >-->
+            <form action="save.php" method="get" id="<?php echo ($recipe['id']); ?>">
+                <p><INPUT type="text" name="id" hidden value="<?php echo ($recipe['id']); ?>"/></p>
+                <p>Название: <INPUT type="text" required name="name" maxlength="35" size="50" value="<?php echo ($recipe['name']); ?>"/></p>
+                <p>Описание: <INPUT type="text" required name="description" maxlength="35" size="50" value="<?php echo ($recipe['description']); ?>"/></p>
+                <script>
+                    data = JSON.parse('<?php echo json_encode($recipe); ?>');
+                </script>
+
+                <h3>Ингредиенты:</h3>
+                <table id="ingredientsTable" cellspacing="0" border="1" cellpadding="5" data-max_index=' .count($ingredientList). '>
+                    <tbody><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>
+                </table>
+                <button type="button" onclick="addIngredient(this)">Добавить</button>
+
+                <h3>Шаги:</h3>
+                <table id="stepsTable" cellspacing="0" border="1" cellpadding="5" data-max_index=' .count($stepList). '>
+                    <tbody>
+                        <tr><td>Описание</td><td>Время</td><td>Фото</td><td>Действие</td></tr>
+                    </tbody>
+                </table>
+                <button type="button" onclick="addStep(this)">Добавить</button>
+
+                <p><input type="submit" /></p>
+            </form>
             <script>
-                data = JSON.parse('<?php echo json_encode($recipe); ?>');
+                printIngredients();
+                printSteps();
             </script>
 
-            <h3>Ингредиенты:</h3>
-            <table id="ingredientsTable" cellspacing="0" border="1" cellpadding="5" data-max_index=' .count($ingredientList). '>
-                <tbody><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>
-            </table>
-            <button type="button" onclick="addIngredient(this)">Добавить</button>
-
-            <h3>Шаги:</h3>
-            <table id="stepsTable" cellspacing="0" border="1" cellpadding="5" data-max_index=' .count($stepList). '>
-                <tbody>
-                    <tr><td>Описание</td><td>Время</td><td>Фото</td><td>Действие</td></tr>
-                </tbody>
-            </table>
-            <button type="button" onclick="addStep(this)">Добавить</button>
-
-            <p><input type="submit" /></p>
-        </form>
-        <script>
-            printIngredients();
-            printSteps();
-        </script>
-    </body>
+        <?php } else { ?>
+            <p>Рецепт не найден</p>
+        <?php } ?>
+    <button onclick="location.href = 'list.php'" id="toList">В список рецептов</button>
+</body>
 </html>

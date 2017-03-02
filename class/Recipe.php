@@ -22,24 +22,24 @@ class Recipe {
         $this->description = $data['description'];
 
         if (isset($data['ingredient'])) {
-            echo 'Ingredients from GET';
+            //echo 'Ingredients from GET<br>';
             for ($i = 0; $i < count($data['ingredient']); $i++) {
                 $this->ingredients[] = new Ingredient($data['ingredient'][$i]);
             }
         } else {
-            echo 'Ingredients fB';
+            //echo 'Ingredients DB<br>';
             $this->requestIngredients();
         }
 
         if (isset($data['step'])) {
-            echo 'Steps from GET';
+            //echo 'Steps from GET<br>';
             for ($i = 0; $i < count($data['step']); $i++) {
                 $step = new Step($data['step'][$i]);
                 $step->setRecipleId($this->id);
                 $this->steps[] = $step;
             }
         } else {
-            echo 'Steps from DB';
+            //echo 'Steps from DB<br>';
             $this->requestSteps();
         }
         //$this->status      = self::statusWith($data['status']);
@@ -168,7 +168,7 @@ class Recipe {
         $values["description"] = $this->description;
         $stmt->execute($values);
     }
-
+//http://phpfaq.ru/pdo#insert
     public function insert() {
 //        $query = 'SELECT id, name, description FROM recipes WHERE id = :id';
 //        $stmt  = ApkDB::getInstance()->prepare($query);
