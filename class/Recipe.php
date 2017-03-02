@@ -23,33 +23,30 @@ class Recipe {
 
         if (isset($data['ingredient'])) {
             echo 'Ingredients from GET';
-            for($i=0; $i < count($data['ingredient']); $i++)
-            {
+            for ($i = 0; $i < count($data['ingredient']); $i++) {
                 $this->ingredients[] = new Ingredient($data['ingredient'][$i]);
             }
         } else {
             echo 'Ingredients fB';
             $this->requestIngredients();
         }
-        
+
         if (isset($data['step'])) {
             echo 'Steps from GET';
-            for($i=0; $i < count($data['step']); $i++)
-            {
+            for ($i = 0; $i < count($data['step']); $i++) {
                 $step = new Step($data['step'][$i]);
                 $step->setRecipleId($this->id);
                 $this->steps[] = $step;
             }
         } else {
             echo 'Steps from DB';
-            $this->requestSteps();    
+            $this->requestSteps();
         }
         //$this->status      = self::statusWith($data['status']);
         //$this->type        = Cast::accType($data['type']);
         //$this->medicine    = Cast::medicineType($data['med']);
         //$this->test        = $data['test'] == 1 ? true : false;
         //$this->requestHistory();
-        
         //$this->requestIngredients();
         //$this->requestVolunteers();
     }
@@ -147,6 +144,45 @@ class Recipe {
         while ($row = $stmt->fetch(PDO::FETCH_LAZY)) {
             $this->ingredients[] = new Ingredient($row);
         }
+    }
+    /*
+    public function pdoSet($allowed, &$values, $source = array()) {
+        $set = '';
+        $values = array();
+        if (!$source)
+            $source = &$_POST;
+        foreach ($allowed as $field) {
+            if (isset($source[$field])) {
+                $set .= "`" . str_replace("`", "``", $field) . "`" . "=:$field, ";
+                $values[$field] = $source[$field];
+            }
+        }
+        return substr($set, 0, -2);
+    }    
+*/
+    public function update() {
+        $query = "UPDATE recipes SET name = :name, description = :description WHERE id = :id";
+        $stmt  = ApkDB::getInstance()->prepare($query);
+        $values["id"] = $this->id;
+        $values["name"] = $this->name;
+        $values["description"] = $this->description;
+        $stmt->execute($values);
+    }
+
+    public function insert() {
+//        $query = 'SELECT id, name, description FROM recipes WHERE id = :id';
+//        $stmt  = ApkDB::getInstance()->prepare($query);
+//        $stmt->execute(array('id' => $data));
+//        $row = $stmt->fetch(PDO::FETCH_LAZY);
+//        $recipe = new Recipe($row);
+//        return $recipe->get();
+//                    'name' => $this->name,
+//            'description' => $this->description,
+
+        $allowed = array("name", "description"); // allowed fields
+        $sql = "INSERT INTO recipes SET " . pdoSet($allowed, $values);
+        $stm = $dbh->prepare($sql);
+        $stm->execute($values);
     }
 
     /*
