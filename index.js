@@ -46,6 +46,12 @@ addInputStep = function (idx, name, value, size) {
 addIngredient = function (idx, name, count, unit) {
     var tr = document.createElement('tr');
 
+    var hiddenID = document.createElement("input");
+    hiddenID.setAttribute("type", "hidden");
+    hiddenID.setAttribute("name", 'ingredient[' + idx + '][id]');
+    hiddenID.setAttribute("value", idx);
+    tr.appendChild(hiddenID);
+
     var tdName = addInputIngredient(idx, 'name', name, 50)
     tr.appendChild(tdName);
 

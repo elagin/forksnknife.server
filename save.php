@@ -15,12 +15,14 @@ function __autoload($class_name) {
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-print_r($_GET);
+//print_r($_GET);
 
 //if($_GET['recipe_id'])
 $recipe = new Recipe($_GET);
 echo '<h2>recipe</h2>';
-print_r($recipe);
+//print_r($recipe);
+//print_r($recipe->ingredients);
+//print_r($recipe->steps);
 
 /*
 foreach ($_GET as $key => $value) {

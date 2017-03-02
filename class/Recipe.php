@@ -22,25 +22,28 @@ class Recipe {
         $this->description = $data['description'];
 
         if (isset($data['ingredient'])) {
-            echo 'From GET';
+            echo 'Ingredients from GET';
             for($i=0; $i < count($data['ingredient']); $i++)
             {
-                $this->steps[] = new Step($data['ingredient'][$i]);
+                $this->ingredients[] = new Ingredient($data['ingredient'][$i]);
             }
         } else {
-            echo 'From DB';
+            echo 'Ingredients fB';
             $this->requestIngredients();
         }
         
-        if (isset($data['ingredient'])) {
-        
-        
+        if (isset($data['step'])) {
+            echo 'Steps from GET';
+        } else {
+            echo 'Steps from DB';
+            $this->requestSteps();    
+        }
         //$this->status      = self::statusWith($data['status']);
         //$this->type        = Cast::accType($data['type']);
         //$this->medicine    = Cast::medicineType($data['med']);
         //$this->test        = $data['test'] == 1 ? true : false;
         //$this->requestHistory();
-        $this->requestSteps();
+        
         //$this->requestIngredients();
         //$this->requestVolunteers();
     }
