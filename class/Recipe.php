@@ -34,6 +34,12 @@ class Recipe {
         
         if (isset($data['step'])) {
             echo 'Steps from GET';
+            for($i=0; $i < count($data['step']); $i++)
+            {
+                $step = new Step($data['step'][$i]);
+                $step->setRecipleId($this->id);
+                $this->steps[] = $step;
+            }
         } else {
             echo 'Steps from DB';
             $this->requestSteps();    

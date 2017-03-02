@@ -13,10 +13,22 @@ removeStep = function (el) {
     el.parentNode.parentNode.remove();
 };
 
-addStep = function (idx, desc, time, photo) {
+addStep = function (/*reciple_id, */idx, desc, time, photo) {
     var tr = document.createElement('tr');
-
-    var tdDesc = addTextArea('desc', desc);
+    
+    var hiddenID = document.createElement("input");
+    hiddenID.setAttribute("type", "hidden");
+    hiddenID.setAttribute("name", 'step[' + idx + '][id]');
+    hiddenID.setAttribute("value", idx);
+    tr.appendChild(hiddenID);
+/*    
+    var hiddenRecipleID = document.createElement("input");
+    hiddenID.setAttribute("type", "hidden");
+    hiddenID.setAttribute("name", 'step[' + idx + '][' + reciple_id + ']');
+    hiddenID.setAttribute("value", reciple_id);
+    tr.appendChild(hiddenRecipleID);
+*/
+    var tdDesc = addTextArea(idx, 'description', desc);
     tr.appendChild(tdDesc);
 
     var tdTime = addInputStep(idx, 'time', time, 5);
@@ -78,10 +90,10 @@ addInputIngredient = function (idx, name, value, size) {
     return td;
 }
 
-addTextArea = function (name, value) {
+addTextArea = function (idx, name, value) {
     var td = document.createElement('td');
     value = value || '';
-    var str = '<textarea name="' + name + '" cols="80" rows="5" >' + value + '</textarea>';
+    var str = '<textarea name=step[' + idx + '][' + name + '] cols="80" rows="5" >' + value + '</textarea>';
     td.innerHTML = str;
     return td;
 }
@@ -93,9 +105,9 @@ printIngredients = function () {
     }
 };
 
-printSteps = function () {
+printSteps = function (/*reciple_id*/) {
     for (var i = 0; i < data.s.length; i++) {
         var step = data.s[i];
-        addStep(i, step.desc, step.time, step.photo)
+        addStep(/*reciple_id, */i, step.desc, step.time, step.photo)
     }
 };

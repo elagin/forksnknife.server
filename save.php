@@ -22,7 +22,7 @@ $recipe = new Recipe($_GET);
 echo '<h2>recipe</h2>';
 //print_r($recipe);
 //print_r($recipe->ingredients);
-//print_r($recipe->steps);
+print_r($recipe->steps);
 
 /*
 foreach ($_GET as $key => $value) {

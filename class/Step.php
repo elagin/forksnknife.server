@@ -31,4 +31,9 @@ class Step
 	    'photo'   => $this->photo
         );
     }
+    
+    public function setRecipleId($value)
+    {
+        $this->recipleId = $value;
+    }
 }
