@@ -13,28 +13,28 @@ removeStep = function (el) {
     el.parentNode.parentNode.remove();
 };
 
-addStep = function (/*reciple_id, */idx, desc, time, photo) {
+addStep = function (i, idx, desc, time, photo) {
     var tr = document.createElement('tr');
-    
+
     var hiddenID = document.createElement("input");
     hiddenID.setAttribute("type", "hidden");
-    hiddenID.setAttribute("name", 'step[' + idx + '][id]');
+    hiddenID.setAttribute("name", 'step[' + i + '][id]');
     hiddenID.setAttribute("value", idx);
     tr.appendChild(hiddenID);
-/*    
-    var hiddenRecipleID = document.createElement("input");
-    hiddenID.setAttribute("type", "hidden");
-    hiddenID.setAttribute("name", 'step[' + idx + '][' + reciple_id + ']');
-    hiddenID.setAttribute("value", reciple_id);
-    tr.appendChild(hiddenRecipleID);
-*/
-    var tdDesc = addTextArea(idx, 'description', desc);
+    /*    
+     var hiddenRecipleID = document.createElement("input");
+     hiddenID.setAttribute("type", "hidden");
+     hiddenID.setAttribute("name", 'step[' + idx + '][' + reciple_id + ']');
+     hiddenID.setAttribute("value", reciple_id);
+     tr.appendChild(hiddenRecipleID);
+     */
+    var tdDesc = addTextArea(i, 'description', desc);
     tr.appendChild(tdDesc);
 
-    var tdTime = addInputStep(idx, 'time', time, 5);
+    var tdTime = addInputStep(i, 'time', time, 5);
     tr.appendChild(tdTime);
 
-    var tdPhoto = addInputStep(idx, 'photo', photo, 10);
+    var tdPhoto = addInputStep(i, 'photo', photo, 10);
     tr.appendChild(tdPhoto);
 
     var tdDel = document.createElement('td');
@@ -45,7 +45,7 @@ addStep = function (/*reciple_id, */idx, desc, time, photo) {
     tableRef.appendChild(tr);
     tableRef.setAttribute('data-max_index', idx++);
 
-}
+};
 
 addInputStep = function (idx, name, value, size) {
     var td = document.createElement('td');
@@ -53,34 +53,37 @@ addInputStep = function (idx, name, value, size) {
     var str = '<INPUT type="text" name=step[' + idx + '][' + name + '] maxlength="' + size + '" size="' + size + '" value="' + String(value) + '"/>';
     td.innerHTML = str;
     return td;
-}
+};
 
-addIngredient = function (idx, name, count, unit) {
+addIngredient = function (i, idx, name, count, unit) {
     var tr = document.createElement('tr');
+    var tableRef = ingredientsTable.querySelector('tbody');
+    if(typeof i == "undefined")
+        i = tableRef.getAttribute('data-max_index');
 
     var hiddenID = document.createElement("input");
     hiddenID.setAttribute("type", "hidden");
-    hiddenID.setAttribute("name", 'ingredient[' + idx + '][id]');
+    hiddenID.setAttribute("name", 'ingredient[' + i + '][id]');
     hiddenID.setAttribute("value", idx);
     tr.appendChild(hiddenID);
 
-    var tdName = addInputIngredient(idx, 'name', name, 50)
+    var tdName = addInputIngredient(i, 'name', name, 50)
     tr.appendChild(tdName);
 
-    var tdCount = addInputIngredient(idx, 'count', count, 5)
+    var tdCount = addInputIngredient(i, 'count', count, 5)
     tr.appendChild(tdCount);
 
-    var tdUnit = addInputIngredient(idx, 'unit', unit, 10)
+    var tdUnit = addInputIngredient(i, 'unit', unit, 10)
     tr.appendChild(tdUnit);
 
     var tdDel = document.createElement('td');
     tdDel.innerHTML = '<button onclick="removeIngredient(this)">Удалить</button>';
     tr.appendChild(tdDel);
 
-    var tableRef = ingredientsTable.querySelector('tbody');
+    //var tableRef = ingredientsTable.querySelector('tbody');
     tableRef.appendChild(tr);
     tableRef.setAttribute('data-max_index', idx++);
-}
+};
 
 addInputIngredient = function (idx, name, value, size) {
     var td = document.createElement('td');
@@ -96,18 +99,18 @@ addTextArea = function (idx, name, value) {
     var str = '<textarea name=step[' + idx + '][' + name + '] cols="80" rows="5" >' + value + '</textarea>';
     td.innerHTML = str;
     return td;
-}
+};
 
 printIngredients = function () {
     for (var i = 0; i < data.i.length; i++) {
         var ingredient = data.i[i];
-        addIngredient(i, ingredient.name, ingredient.count, ingredient.unit)
+        addIngredient(i, ingredient.id, ingredient.name, ingredient.count, ingredient.unit);
     }
 };
 
 printSteps = function (/*reciple_id*/) {
     for (var i = 0; i < data.s.length; i++) {
         var step = data.s[i];
-        addStep(/*reciple_id, */i, step.desc, step.time, step.photo)
+        addStep(i, step.id, step.desc, step.time, step.photo);
     }
 };
