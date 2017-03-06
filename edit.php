@@ -8,7 +8,7 @@ function __autoload($class_name) {
     require_once 'class/' . $class_name . '.php';
 }
 
-$isOK = false;
+$isOK = true;
 
 if (isset($_GET['id'])) {
     $recipe_id = $_GET['id'];
@@ -18,6 +18,7 @@ if (isset($_GET['id'])) {
         $ingredientList = $recipe['i'];
         //echo count($ingredientList);
         $stepList = $recipe['s'];
+        //print_r($stepList);
         $isOK = true;
     }
 }
@@ -33,10 +34,22 @@ if (isset($_GET['id'])) {
     <body>
         <?php if ($isOK) { ?>
             <!--<form action="edit.php" method="get" id="auth" >-->
-            <form action="save.php" method="get" id="<?php echo ($recipe['id']); ?>">
-                <p><INPUT type="text" name="id" hidden value="<?php echo ($recipe['id']); ?>"/></p>
-                <p>Название: <INPUT type="text" required name="name" maxlength="35" size="50" value="<?php echo ($recipe['name']); ?>"/></p>
-                <p>Описание: <INPUT type="text" required name="description" maxlength="35" size="50" value="<?php echo ($recipe['description']); ?>"/></p>
+            <?php
+            $recipe_id = 0;
+            $recipe_name = "";
+            $recipe_description = "";
+            if (isset($recipe['id']))
+                $recipe_id = $recipe['id'];
+            if (isset($recipe['name']))
+                $recipe_name = $recipe['name'];
+            if (isset($recipe['description']))
+                $recipe_description = $recipe['description'];
+            ?>    
+
+            <form action="save.php" method="get" id="<?php echo $recipe_id; ?>">
+                <p><INPUT type="text" name="id" hidden value="<?php echo $recipe_id; ?>"/></p>
+                <p>Название: <INPUT type="text" required name="name" maxlength="35" size="50" value="<?php echo ($recipe_name); ?>"/></p>
+                <p>Описание: <INPUT type="text" required name="description" maxlength="35" size="50" value="<?php echo ($recipe_description); ?>"/></p>
                 <script>
                     data = JSON.parse('<?php echo json_encode($recipe); ?>');
                 </script>
@@ -44,7 +57,7 @@ if (isset($_GET['id'])) {
                 <h3>Ингредиенты:</h3>
                 <table id="ingredientsTable" cellspacing="0" border="1" cellpadding="5">
                     <tbody data-max_index="0"><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>
-<!--                    <tbody data-max_index="<?php echo (count($ingredientList)); ?>"><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>-->
+    <!--                    <tbody data-max_index="<?php echo (count($ingredientList)); ?>"><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>-->
                 </table>
                 <button type="button" onclick="addIngredient()">Добавить</button>
                 <!--<button type="button" onclick="addIngredient(this)">Добавить</button>-->

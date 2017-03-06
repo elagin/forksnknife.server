@@ -39,8 +39,8 @@ class Ingredient {
         $values["name"] = $this->name;
         $values["count"] = $this->count;
         $values["unit"] = $this->unit;
-        //echo $query;
-        print_r($values);
+//        echo $query;
+//        print_r($values);
         $stmt->execute($values);
     }
 }

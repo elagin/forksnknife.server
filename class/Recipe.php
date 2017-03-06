@@ -139,22 +139,46 @@ class Recipe {
       }
      */
 
+
+    public function insert() {
+        if ($this->id != 0) {
+            insert_update();
+        } else {
+            $fields = array("name", "description");
+            $query = "INSERT INTO recipes (" . ApkDB::getFields($fields) . ") " .
+                    " VALUES (" . ApkDB::getPlaceHolders($fields) . ")" .
+                    " ON DUPLICATE KEY UPDATE " .
+                    ApkDB::getFieldPlace($fields);
+            $stmt = ApkDB::getInstance()->prepare($query);
+            $values["name"] = $this->name;
+            $values["description"] = $this->description;
+            $stmt->execute($values);
+            $last_id = ApkDB::lastInsertId();
+            echo 'Insert by id: ' + $last_id;
+            $this->ingredients_steps_save($last_id);
+        }
+    }
+
     public function insert_update() {
-          $fields = array("id", "name", "description");
-          $query = "INSERT INTO recipes (" . ApkDB::getFields($fields) . ") " .
-          " VALUES (" . ApkDB::getPlaceHolders($fields) . ")" .
-          " ON DUPLICATE KEY UPDATE " .
-          ApkDB::getFieldPlace($fields);
-          $stmt = ApkDB::getInstance()->prepare($query);
-          $values["id"] = $this->id;
-          $values["name"] = $this->name;
-          $values["description"] = $this->description;
-          $stmt->execute($values);
+        $fields = array("id", "name", "description");
+        $query = "INSERT INTO recipes (" . ApkDB::getFields($fields) . ") " .
+                " VALUES (" . ApkDB::getPlaceHolders($fields) . ")" .
+                " ON DUPLICATE KEY UPDATE " .
+                ApkDB::getFieldPlace($fields);
+        $stmt = ApkDB::getInstance()->prepare($query);
+        $values["id"] = $this->id;
+        $values["name"] = $this->name;
+        $values["description"] = $this->description;
+        $stmt->execute($values);
+        $this->ingredients_steps_save($this->id);
+    }
+
+    private function ingredients_steps_save($recipe_id) {
         foreach ($this->ingredients as $ingredient) {
-            $ingredient->insert_update($this->id);
+            $ingredient->insert_update($recipe_id);
         }
         foreach ($this->steps as $step) {
-            $step->insert_update($this->id);
+            $step->insert_update($recipe_id);
         }
     }
 }

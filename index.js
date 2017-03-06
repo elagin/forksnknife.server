@@ -68,11 +68,7 @@ addIngredient = function (idx, name, count, unit) {
 
     var tdUnit = addInputIngredient(i, 'unit', unit, 10)
     tr.appendChild(tdUnit);
-/*    
-    var xx = 10;
-    var yy = 23+xx;
-    alert(yy);
-*/
+
     var tdDel = document.createElement('td');
     tdDel.innerHTML = '<button onclick="removeIngredient(this)">Удалить</button>';
     tr.appendChild(tdDel);
@@ -104,9 +100,9 @@ printIngredients = function () {
     }
 };
 
-printSteps = function (/*reciple_id*/) {
+printSteps = function () {
     for (var i = 0; i < data.s.length; i++) {
         var step = data.s[i];
-        addStep(step.id, step.desc, step.time, step.photo);
+        addStep(step.id, step.description, step.time, step.photo);
     }
 };

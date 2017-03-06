@@ -71,4 +71,8 @@ class ApkDB {
         return $res;
     }
 
+    public function lastInsertId() {
+        return self::$pdo->lastInsertId();
+    }
+
 }
