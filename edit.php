@@ -42,15 +42,16 @@ if (isset($_GET['id'])) {
                 </script>
 
                 <h3>Ингредиенты:</h3>
-                <table id="ingredientsTable" cellspacing="0" border="1" cellpadding="5" data-max_index="<?php echo (count($ingredientList)); ?>">
-                    <tbody><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>
+                <table id="ingredientsTable" cellspacing="0" border="1" cellpadding="5">
+                    <tbody data-max_index="0"><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>
+<!--                    <tbody data-max_index="<?php echo (count($ingredientList)); ?>"><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>-->
                 </table>
                 <button type="button" onclick="addIngredient()">Добавить</button>
                 <!--<button type="button" onclick="addIngredient(this)">Добавить</button>-->
 
                 <h3>Шаги:</h3>
-                <table id="stepsTable" cellspacing="0" border="1" cellpadding="5" data-max_index=' .count($stepList). '>
-                    <tbody>
+                <table id="stepsTable" cellspacing="0" border="1" cellpadding="5">
+                    <tbody data-max_index="0">
                         <tr><td>Описание</td><td>Время</td><td>Фото</td><td>Действие</td></tr>
                     </tbody>
                 </table>

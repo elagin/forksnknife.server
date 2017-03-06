@@ -24,7 +24,7 @@ class GetList extends Core {
       $query = 'SELECT id, photo, desc, time
 
       FROM steps a, users b
-      WHERE reciple_id = ?';
+      WHERE recipe_id = ?';
       $stmt  = ApkDB::getInstance()->prepare($query);
       $stmt->bind_param('i', $this->id);
       $stmt->execute();

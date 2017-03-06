@@ -72,7 +72,7 @@ class Recipe {
     }
 
     private function requestSteps() {
-        $query = 'SELECT id, photo, description, time
+        $query = 'SELECT id, recipe_id, photo, description, time
 				FROM steps a
 				WHERE recipe_id = :recipe_id
 				ORDER BY id';
@@ -95,16 +95,18 @@ class Recipe {
             $this->ingredients[] = new Ingredient($row);
         }
     }
-/*
-    public function update() {
-        $query = "UPDATE recipes SET name = :name, description = :description WHERE id = :id";
-        $stmt = ApkDB::getInstance()->prepare($query);
-        $values["id"] = $this->id;
-        $values["name"] = $this->name;
-        $values["description"] = $this->description;
-        $stmt->execute($values);
-    }
-*/
+
+    /*
+      public function update() {
+      $query = "UPDATE recipes SET name = :name, description = :description WHERE id = :id";
+      $stmt = ApkDB::getInstance()->prepare($query);
+      $values["id"] = $this->id;
+      $values["name"] = $this->name;
+      $values["description"] = $this->description;
+      $stmt->execute($values);
+      }
+     */
+
 //http://phpfaq.ru/pdo#insert
 //    public function insert() {
 //        $query = 'SELECT id, name, description FROM recipes WHERE id = :id';
@@ -138,7 +140,6 @@ class Recipe {
      */
 
     public function insert_update() {
-        /*
           $fields = array("id", "name", "description");
           $query = "INSERT INTO recipes (" . ApkDB::getFields($fields) . ") " .
           " VALUES (" . ApkDB::getPlaceHolders($fields) . ")" .
@@ -149,10 +150,11 @@ class Recipe {
           $values["name"] = $this->name;
           $values["description"] = $this->description;
           $stmt->execute($values);
-         */
         foreach ($this->ingredients as $ingredient) {
             $ingredient->insert_update($this->id);
         }
+        foreach ($this->steps as $step) {
+            $step->insert_update($this->id);
+        }
     }
-
 }
