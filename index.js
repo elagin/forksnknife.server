@@ -60,7 +60,7 @@ addIngredient = function (idx, name, count, unit) {
     hiddenID.setAttribute("value", idx);
     tr.appendChild(hiddenID);
 
-    var tdName = addInputIngredient(i, 'name', name, 50)
+    var tdName = addInputIngredient(i, 'name', name, 20)
     tr.appendChild(tdName);
 
     var tdCount = addInputIngredient(i, 'count', count, 5)
@@ -80,7 +80,7 @@ addIngredient = function (idx, name, count, unit) {
 addInputIngredient = function (idx, name, value, size) {
     var td = document.createElement('td');
     value = value || '';
-    var str = '<INPUT type="text" name=ingredient[' + idx + '][' + name + '] maxlength="' + size + '" size="' + size + '" value="' + String(value) + '"/>';
+    var str = '<INPUT type="text" required name=ingredient[' + idx + '][' + name + '] maxlength="' + size * 2 + '" size="' + size + '" value="' + String(value) + '"/>';
     td.innerHTML = str;
     return td;
 }
@@ -88,7 +88,7 @@ addInputIngredient = function (idx, name, value, size) {
 addTextArea = function (idx, name, value) {
     var td = document.createElement('td');
     value = value || '';
-    var str = '<textarea name=step[' + idx + '][' + name + '] cols="80" rows="5" >' + value + '</textarea>';
+    var str = '<textarea required name=step[' + idx + '][' + name + '] cols="80" rows="5" >' + value + '</textarea>';
     td.innerHTML = str;
     return td;
 };

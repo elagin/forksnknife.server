@@ -45,28 +45,18 @@ class Recipe {
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            /*
-              'time' => $this->timestamp,
-              'a' => $this->address,
-              'd' => $this->description,
-              's' => $this->status,
-              'o' => $this->owner,
-              'oid' => $this->ownerId,
-              'lat' => $this->lat,
-              'lon' => $this->lon,
-              't' => $this->type,
-              'med' => $this->medicine,
-             */
             's' => array(),
             'i' => array()
-//            'h' => array()
         );
-        foreach ($this->steps as $step) {
-            $out['s'][] = $step->get();
+        if (isset($this->steps)) {
+            foreach ($this->steps as $step) {
+                $out['s'][] = $step->get();
+            }
         }
-
-        foreach ($this->ingredients as $ingredient) {
-            $out['i'][] = $ingredient->get();
+        if (isset($this->ingredients)) {
+            foreach ($this->ingredients as $ingredient) {
+                $out['i'][] = $ingredient->get();
+            }
         }
         return $out;
     }
@@ -181,4 +171,29 @@ class Recipe {
             $step->insert_update($recipe_id);
         }
     }
+
+    public function delete($recipe_id) {
+        $this->delete_ingredients($recipe_id);
+        $this->delete_steps($recipe_id);
+
+        $query = "DELETE FROM recipes WHERE filmID =  :filmID";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':filmID', $_POST['filmID'], PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    private function delete_ingredients($recipe_id) {
+        $query = "DELETE FROM ingredients WHERE recipe_id =  :recipe_id";
+        $stmt = ApkDB::getInstance()->prepare($query);
+        $values["recipe_id"] = $recipe_id;
+        $stmt->execute($values);
+    }
+
+    private function delete_steps($recipe_id) {
+        $query = "DELETE FROM steps WHERE recipe_id =  :recipe_id";
+        $stmt = ApkDB::getInstance()->prepare($query);
+        $values["recipe_id"] = $recipe_id;
+        $stmt->execute($values);
+    }
+
 }

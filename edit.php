@@ -53,34 +53,48 @@ if (isset($_GET['id'])) {
                 <script>
                     data = JSON.parse('<?php echo json_encode($recipe); ?>');
                 </script>
-
-                <h3>Ингредиенты:</h3>
-                <table id="ingredientsTable" cellspacing="0" border="1" cellpadding="5">
-                    <tbody data-max_index="0"><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>
-    <!--                    <tbody data-max_index="<?php echo (count($ingredientList)); ?>"><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>-->
+                <table>
+                    <tr>
+                        <td valign="top">
+                            <h3>Ингредиенты:</h3>
+                            <table id="ingredientsTable" cellspacing="0" border="1" cellpadding="5">
+                                <tbody data-max_index="0"><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>
+                <!--                    <tbody data-max_index="<?php echo (count($ingredientList)); ?>"><tr><td>Название</td><td>Сколько</td><td>Объем</td><td>Действие</td></tr></tbody>-->
+                            </table>
+                            <button type="button" onclick="addIngredient()">Добавить</button>
+                            <!--<button type="button" onclick="addIngredient(this)">Добавить</button>-->
+                        </td>
+                        <td valign="top">
+                            <h3>Шаги:</h3>
+                            <!--<div style="max-height: 300px; overflow-y: auto; inline-box-align:  ">-->
+                            <table id="stepsTable" cellspacing="0" border="1" cellpadding="5">
+                                <tbody data-max_index="0">
+                                    <tr><td>Описание</td><td>Время</td><td>Фото</td><td>Действие</td></tr>
+                                </tbody>
+                            </table>
+                            <!--</div>-->
+                            <button type="button" onclick="addStep(this)">Добавить</button>
+                        </td>                    
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <hr>
+                            <p><input type="submit" value="Сохранить рецепт"/> <input type="reset" value="Сброс"></p>        
+                        </td>
+                    </tr>
                 </table>
-                <button type="button" onclick="addIngredient()">Добавить</button>
-                <!--<button type="button" onclick="addIngredient(this)">Добавить</button>-->
 
-                <h3>Шаги:</h3>
-                <table id="stepsTable" cellspacing="0" border="1" cellpadding="5">
-                    <tbody data-max_index="0">
-                        <tr><td>Описание</td><td>Время</td><td>Фото</td><td>Действие</td></tr>
-                    </tbody>
-                </table>
-                <button type="button" onclick="addStep(this)">Добавить</button>
+            </div>       
+        </form>
+        <script>
+            printIngredients();
+            printSteps();
+        </script>
 
-                <p><input type="submit" value="Сохранить рецепт"/></p>
-            </form>
-            <script>
-                printIngredients();
-                printSteps();
-            </script>
-
-        <?php } else { ?>
-            <p>Рецепт не найден</p>
-        <?php } ?>
-        <hr>
-    <button onclick="location.href = 'list.php'" id="toList">В список рецептов</button>
+    <?php } else { ?>
+        <p>Рецепт не найден</p>
+    <?php } ?>
+    <hr>
+<button onclick="location.href = 'list.php'" id="toList">В список рецептов</button>
 </body>
 </html>
