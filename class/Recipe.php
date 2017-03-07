@@ -132,7 +132,7 @@ class Recipe {
 
     public function insert() {
         if ($this->id != 0) {
-            insert_update();
+            $this->insert_update();
         } else {
             $fields = array("name", "description");
             $query = "INSERT INTO recipes (" . ApkDB::getFields($fields) . ") " .
@@ -160,6 +160,7 @@ class Recipe {
         $values["name"] = $this->name;
         $values["description"] = $this->description;
         $stmt->execute($values);
+        $this->delete_childs($this->id);
         $this->ingredients_steps_save($this->id);
     }
 
@@ -172,14 +173,15 @@ class Recipe {
         }
     }
 
-    public function delete($recipe_id) {
+    public function delete_childs($recipe_id) {
         $this->delete_ingredients($recipe_id);
         $this->delete_steps($recipe_id);
-
-        $query = "DELETE FROM recipes WHERE filmID =  :filmID";
+/*
+        $query = "DELETE FROM recipes WHERE id =  :recipe_id";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':filmID', $_POST['filmID'], PDO::PARAM_INT);
-        $stmt->execute();
+        $values["recipe_id"] = $recipe_id;
+        $stmt->execute($values);
+ */
     }
 
     private function delete_ingredients($recipe_id) {
