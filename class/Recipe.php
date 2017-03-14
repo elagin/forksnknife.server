@@ -22,16 +22,16 @@ class Recipe {
         $this->description = $data['description'];
 
         if (isset($data['ingredient'])) {
-            for ($i = 0; $i < count($data['ingredient']); $i++) {
-                $this->ingredients[] = new Ingredient($data['ingredient'][$i]);
+            foreach ($data['ingredient'] as $ingredient) {
+                $this->ingredients[] = new Ingredient($ingredient);
             }
         } else {
             $this->requestIngredients();
         }
 
         if (isset($data['step'])) {
-            for ($i = 0; $i < count($data['step']); $i++) {
-                $step = new Step($data['step'][$i]);
+            foreach ($data['step'] as $step) {
+                $step = new Step($step);
                 $step->setRecipleId($this->id);
                 $this->steps[] = $step;
             }

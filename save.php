@@ -16,7 +16,7 @@ function __autoload($class_name) {
 }
 
 $recipe = new Recipe($_GET);
-print_r($recipe->steps);
+//print_r($recipe->ingredients);
 $recipe->insert();
 header('Location: list.php');
 die();
